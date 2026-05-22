@@ -9,9 +9,15 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@omss/framework": "^1.1.26",
+    "@vidstack/react": "^1.12.13",
+    "hls.js": "^1.6.16",
+    "media-icons": "^1.1.5",
     "next": "16.2.6",
     "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "react-dom": "19.2.4",
+    "react-icons": "^5.6.0",
+    "valtio": "^2.3.2"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
