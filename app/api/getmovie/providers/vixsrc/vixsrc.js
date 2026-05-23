@@ -88,19 +88,23 @@ function buildPageUrl(media) {
 async function fetchApi(url) {
     try {
         const response = await fetch(url, { headers: HEADERS });
+        console.log('[fetchApi]', url, response.status);
         if (response.status !== 200) return null;
         return await response.json();
-    } catch {
+    } catch (err) {
+        console.error('[fetchApi] error:', err.message);
         return null;
     }
 }
-
 async function fetchPage(suburl) {
     try {
-        const response = await fetch(BASE_URL + suburl, { headers: HEADERS });
+        const fullUrl = BASE_URL + suburl;
+        const response = await fetch(fullUrl, { headers: HEADERS });
+        console.log('[fetchPage]', fullUrl, response.status);
         if (response.status !== 200) return null;
         return await response.text();
-    } catch {
+    } catch (err) {
+        console.error('[fetchPage] error:', err.message);
         return null;
     }
 }
@@ -130,13 +134,14 @@ async function fetchPlaylist(url, referer) {
         const response = await fetch(url, {
             headers: { ...HEADERS, Referer: referer }
         });
+        console.log('[fetchPlaylist]', url, response.status);
         if (response.status !== 200) return null;
         return await response.text();
-    } catch {
+    } catch (err) {
+        console.error('[fetchPlaylist] error:', err.message);
         return null;
     }
 }
-
 
 
 
