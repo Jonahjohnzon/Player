@@ -1,7 +1,7 @@
 
 
 const BASE_URL = 'https://vixsrc.to';
-
+const WORKER_URL = "https://steam-proxy.hadezanubiz.workers.dev";
 const HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150 Safari/537.36',
     Accept: 'application/json, text/javascript, */*; q=0.01',
@@ -87,7 +87,8 @@ function buildPageUrl(media) {
 
 async function fetchApi(url) {
     try {
-        const response = await fetch(url, { headers: HEADERS });
+        const proxied = `${WORKER_URL}/proxy?path=${encodeURIComponent(url)}`;
+        const response = await fetch(proxied);
         console.log('[fetchApi]', url, response.status);
         if (response.status !== 200) return null;
         return await response.json();
@@ -99,7 +100,8 @@ async function fetchApi(url) {
 async function fetchPage(suburl) {
     try {
         const fullUrl = BASE_URL + suburl;
-        const response = await fetch(fullUrl, { headers: HEADERS });
+        const proxied = `${WORKER_URL}/proxy?path=${encodeURIComponent(fullUrl)}`;
+        const response = await fetch(proxied);
         console.log('[fetchPage]', fullUrl, response.status);
         if (response.status !== 200) return null;
         return await response.text();
@@ -129,11 +131,10 @@ function buildMasterUrl({ token, expires, playlist }) {
     return `${playlist}${separator}token=${token}&expires=${expires}&h=1`;
 }
 
-async function fetchPlaylist(url, referer) {
+async function fetchPlaylist(url) {
     try {
-        const response = await fetch(url, {
-            headers: { ...HEADERS, Referer: referer }
-        });
+        const proxied = `${WORKER_URL}/proxy?path=${encodeURIComponent(url)}`;
+        const response = await fetch(proxied);
         console.log('[fetchPlaylist]', url, response.status);
         if (response.status !== 200) return null;
         return await response.text();
