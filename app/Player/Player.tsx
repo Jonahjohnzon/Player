@@ -41,7 +41,7 @@ const Player = () => {
   return (
     <div className="bg-black h-screen overflow-hidden flex justify-center items-center">
       <MediaPlayer
-        className="max-w-full max-h-full aspect-video bg-slate-900 text-white font-sans overflow-hidden rounded-md"
+        className="max-w-full max-h-full aspect-video bg-black  text-white font-sans overflow-hidden rounded-md"
         src={playerSources}
         crossOrigin
         playsInline
