@@ -1,20 +1,57 @@
+const cache = new Map();
+
+const getCacheKey = (Tmdb_Id, Type, Season, Episode, Server) => {
+    if (Type === 'tv') return `${Server}-${Type}-${Tmdb_Id}-${Season}-${Episode}`;
+    return `${Server}-${Type}-${Tmdb_Id}`;
+};
+
+const CACHE_TTL = {
+    Vixsrc:  1000 * 60 * 30,           // 30 min
+    Vidrock: 1000 * 60 * 60 * 24 * 10, // 10 days — override default if needed
+    default: 1000 * 60 * 60 * 24 * 10  // 10 days for everything else
+};
+
+const getTTL = (Server) => CACHE_TTL[Server] ?? CACHE_TTL.default;
+
 export const utill = async (Tmdb_Id, Type, Season, Episode, Server) => {
-    try{
-        const media ={Tmdb_Id, Type, Season, Episode, Server}
-        switch(Server){
-            case 'Vidrock':
-                const { vidRockProvider } = await import('../providers/vidrock/vidrock')
-                return await vidRockProvider(media)
-            case 'Vixsrc':
-                const { vixSrcProvider } = await import('../providers/vixsrc/vixsrc')
-                return await vixSrcProvider(media)
-            default:
-                return {error: 'Unsupported server.'}
+    try {
+        const key = getCacheKey(Tmdb_Id, Type, Season, Episode, Server);
+        const ttl = getTTL(Server);
+
+        if (cache.has(key)) {
+            const { data, timestamp } = cache.get(key);
+            if (Date.now() - timestamp < ttl) {
+                console.log('[cache] hit:', key);
+                return data;
+            }
+            cache.delete(key);
         }
 
+        console.log('[cache] miss:', key);
+
+        const media = { Tmdb_Id, Type, Season, Episode, Server };
+        let data;
+
+        switch (Server) {
+            case 'Vidrock':
+                const { vidRockProvider } = await import('../providers/vidrock/vidrock');
+                data = await vidRockProvider(media);
+                break;
+            case 'Vixsrc':
+                const { vixSrcProvider } = await import('../providers/vixsrc/vixsrc');
+                data = await vixSrcProvider(media);
+                break;
+            default:
+                return { error: 'Unsupported server.' };
+        }
+
+        if (data?.sources?.length > 0) {
+            cache.set(key, { data, timestamp: Date.now() });
+        }
+
+        return data;
+    } catch (error) {
+        console.error(error);
+        return { error: 'An error occurred while fetching data.' };
     }
-    catch(error){
-        console.error(error)
-        return {error: 'An error occurred while fetching data.'}
-    }
-}
+};
