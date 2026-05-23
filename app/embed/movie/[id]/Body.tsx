@@ -13,6 +13,7 @@ const Body = ({ paramId }: { paramId: string }) => {
     try {
        store.ParamId = paramId;
        store.loading = true;
+       store.Type = "movie";
       const response = await GetMovieFetch({ Tmdb_Id: paramId, Type: "movie", Server: ServerinUse });
       if(response.error){
         store.error = true;

@@ -12,6 +12,9 @@ const Body = ({ paramId, season, episode }: { paramId: string; season: string; e
         try {
            store.ParamId = paramId;
            store.loading = true;
+           store.Season = season;
+           store.Episode = episode;
+           store.Type = "tv";
           const response = await GetMovieFetch({ Tmdb_Id: paramId, Type: "tv", Server: ServerinUse, Season: season, Episode: episode });
           if(response.error){
             store.error = true;

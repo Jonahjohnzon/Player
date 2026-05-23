@@ -90,10 +90,10 @@ function AudioSubmenu() {
   );
 }
 
-const ChangeServer = async ({ParamId, ServerinUse}: { ParamId: string; ServerinUse: string }) => {
+const ChangeServer = async ({ParamId, ServerinUse, Type, Season, Episode}: { ParamId: string; ServerinUse: string; Type: string; Season: string; Episode: string }) => {
   try{
           store.loading = true;
-          const response = await GetMovieFetch(ParamId,"movie",ServerinUse);
+          const response = await GetMovieFetch({ Tmdb_Id: ParamId, Type, Server: ServerinUse, Season, Episode });
           if(response.error){
             store.error = true;
             store.loading = false;
@@ -182,7 +182,9 @@ function Servermenu (){
   const ServerinUse = useSnapshot(store).ServerinUse;
   const hint = ServerinUse
   const ParamId = useSnapshot(store).ParamId;
-
+  const Type = useSnapshot(store).Type;
+  const Season = useSnapshot(store).Season;
+  const Episode = useSnapshot(store).Episode;
 
   return (
     <Menu.Root>
@@ -197,7 +199,7 @@ function Servermenu (){
           {options.map(({ name, id }) => (
             <Radio value={id} onSelect={() => {
               store.ServerinUse = name;
-              ChangeServer({ParamId, ServerinUse:name});
+              ChangeServer({ParamId, ServerinUse:name, Type, Season, Episode});
             }} key={id}>
               {name}
             </Radio>
