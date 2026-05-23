@@ -4,9 +4,9 @@ export const ListServer = [
     name: 'Vidrock',
  
   },
-  {
-    id: 'Vixsrc',
-    name: 'Vixsrc',
-  }
+  // {
+  //   id: 'Vixsrc',
+  //   name: 'Vixsrc',
+  // }
   
 ]

@@ -100,7 +100,6 @@ async function fetchApi(url) {
 async function fetchPage(suburl) {
     try {
         const response = await fetch(BASE_URL + suburl, { headers: HEADERS });
-        console.log('fetchPage response status:', response.status);
         if (response.status !== 200) return null;
         return await response.text();
     } catch {
