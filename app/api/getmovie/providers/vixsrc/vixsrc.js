@@ -66,7 +66,7 @@ async function getSources(media) {
         if (!tokenData) return emptyResult('Invalid or expired token');
 
         const masterUrl = buildMasterUrl(tokenData);
-               
+               console.log(tokenData, masterUrl)
         const playlistContent = await fetchPlaylist(masterUrl, pageUrl);
         if (!playlistContent) return emptyResult('Failed to fetch playlist');
 
@@ -89,7 +89,6 @@ async function fetchApi(url) {
     try {
         const proxied = `${WORKER_URL}/proxy?path=${encodeURIComponent(url)}`;
         const response = await fetch(proxied);
-        console.log('[fetchApi]', url, response.status);
         if (response.status !== 200) return null;
         return await response.json();
     } catch (err) {
@@ -97,16 +96,14 @@ async function fetchApi(url) {
         return null;
     }
 }
+
 async function fetchPage(suburl) {
     try {
-        const fullUrl = BASE_URL + suburl;
-        const proxied = `${WORKER_URL}/proxy?path=${encodeURIComponent(fullUrl)}`;
-        const response = await fetch(proxied);
-        console.log('[fetchPage]', fullUrl, response.status);
+        const response = await fetch(BASE_URL + suburl, { headers: HEADERS });
+        console.log('fetchPage response status:', response.status);
         if (response.status !== 200) return null;
         return await response.text();
-    } catch (err) {
-        console.error('[fetchPage] error:', err.message);
+    } catch {
         return null;
     }
 }
@@ -131,18 +128,18 @@ function buildMasterUrl({ token, expires, playlist }) {
     return `${playlist}${separator}token=${token}&expires=${expires}&h=1`;
 }
 
-async function fetchPlaylist(url) {
+async function fetchPlaylist(url, referer) {
     try {
-        const proxied = `${WORKER_URL}/proxy?path=${encodeURIComponent(url)}`;
-        const response = await fetch(proxied);
-        console.log('[fetchPlaylist]', url, response.status);
+        const response = await fetch(url, {
+            headers: { ...HEADERS, Referer: referer }
+        });
         if (response.status !== 200) return null;
         return await response.text();
-    } catch (err) {
-        console.error('[fetchPlaylist] error:', err.message);
+    } catch {
         return null;
     }
 }
+
 
 
 
