@@ -2,8 +2,7 @@ import { proxy } from "valtio";
 import { ListServer } from "./Player/ListServers";
 export const store = proxy({
     Server:  ListServer[0],
-    Active:  ListServer[0].name,
-    ServerinUse:"Vidrock",
+    ServerinUse:ListServer[0].name,
     Check:false,
     loading:true,
     Type:"",

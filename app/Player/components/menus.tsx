@@ -93,6 +93,7 @@ function AudioSubmenu() {
 const ChangeServer = async ({ParamId, ServerinUse, Type, Season, Episode}: { ParamId: string; ServerinUse: string; Type: string; Season: string; Episode: string }) => {
   try{
           store.loading = true;
+          store.ServerinUse = ServerinUse;
           const response = await GetMovieFetch({ Tmdb_Id: ParamId, Type, Server: ServerinUse, Season, Episode });
           if(response.error){
             store.error = true;
@@ -178,9 +179,7 @@ function CaptionSubmenu() {
 
 function Servermenu (){
   const options = ListServer
-  const Serv = useSnapshot(store).Server
   const ServerinUse = useSnapshot(store).ServerinUse;
-  const hint = ServerinUse
   const ParamId = useSnapshot(store).ParamId;
   const Type = useSnapshot(store).Type;
   const Season = useSnapshot(store).Season;
@@ -190,15 +189,14 @@ function Servermenu (){
     <Menu.Root>
       <SubmenuButton
         label="Servers"
-        hint={hint}
+        hint={ServerinUse}
         disabled={false}
         icon={LuServer}
       />
       <Menu.Content className={submenuClass}>
-        <Menu.RadioGroup className="w-full max-h-48 flex flex-col" value={Serv.id}>
+        <Menu.RadioGroup className="w-full max-h-48 flex flex-col" value={ServerinUse}>
           {options.map(({ name, id }) => (
-            <Radio value={id} onSelect={() => {
-              store.ServerinUse = name;
+            <Radio value={name} onSelect={() => {
               ChangeServer({ParamId, ServerinUse:name, Type, Season, Episode});
             }} key={id}>
               {name}
