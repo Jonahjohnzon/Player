@@ -90,29 +90,47 @@ function AudioSubmenu() {
   );
 }
 
-const ChangeServer = async ({ParamId, ServerinUse, Type, Season, Episode}: { ParamId: string; ServerinUse: string; Type: string; Season: string; Episode: string }) => {
-  try{
-          store.loading = true;
-          store.ServerinUse = ServerinUse;
-          const response = await GetMovieFetch({ Tmdb_Id: ParamId, Type, Server: ServerinUse, Season, Episode });
-          if(response.error){
+const ChangeServer = async ({ ParamId, ServerinUse, Type, Season, Episode }: {
+    ParamId: string;
+    ServerinUse: string;
+    Type: string;
+    Season: string;
+    Episode: string;
+}) => {
+    try {
+        store.loadingServer = true;
+        store.ServerinUse = ServerinUse;
+        store.tryingServer = ServerinUse; // show which server is being tried
+
+        const response = await GetMovieFetch({
+            Tmdb_Id: ParamId,
+            Type,
+            Server: ServerinUse,
+            Season,
+            Episode
+        });
+
+        if (response.error || !response.sources?.length) {
             store.error = true;
-            store.loading = false;
+            store.tryingServer = null;
+            store.serverFailed = ServerinUse; // track which one failed
             return;
-          }
-          store.title = response.title;
-          store.sources = response.sources;
-          store.subtitles = response.subtitles;
-          store.loading = false
-          store.title = response.title
-          store.poster = response.poster
-          store.backdrop = response.backdrop
-          store.overview = response.overview
-  }
-  catch(error){
-    console.error('Error changing server:', error);
-  }
-}
+        }
+
+        store.sources = response.sources;
+        store.subtitles = response.subtitles;
+        store.title = response.title;
+        store.poster = response.poster;
+        store.backdrop = response.backdrop;
+        store.overview = response.overview;
+        store.loadingServer = false;
+        store.tryingServer = null;
+        store.serverFailed = null;
+    } catch {
+        store.tryingServer = null;
+        store.serverFailed = ServerinUse;
+    }
+};
 
 export function Server({ placement }: SettingsProps) {
   return (

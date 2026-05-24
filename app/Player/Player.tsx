@@ -39,12 +39,17 @@ import { VideoLayout } from './components/layouts/video-layout';
 };
 
 
+
+
 const Player = () => {
-  const snap = useSnapshot(store);
+ const snap = useSnapshot(store);
   const sources = snap.sources;
   const subtitles = snap.subtitles;
   const poster = snap.poster;
   const backdrop = snap.backdrop;
+  const loading = snap.loadingServer;
+  const tryingServer = snap.tryingServer;
+  const serverFailed = snap.serverFailed;
   const player = useRef<MediaPlayerInstance>(null);
 
 
@@ -63,9 +68,46 @@ const Player = () => {
 }));
 
   return (
-    <div className="bg-black h-screen overflow-hidden flex justify-center items-center">
+    <div className="bg-black h-screen overflow-hidden flex justify-center items-center relative">
+
+      {/* Loading overlay — outside MediaPlayer */}
+      {loading ? <> (
+        <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-black/80 backdrop-blur-sm gap-4">
+          {tryingServer && (
+            <>
+              <div className="w-10 h-10 rounded-full border-2 border-white/20 border-t-white animate-spin" />
+              <div className="flex flex-col items-center gap-1">
+                <p className="text-white/50 text-xs tracking-widest uppercase">Switching to</p>
+                <p className="text-white text-lg font-semibold">{tryingServer}</p>
+              </div>
+              <button
+                onClick={() => {
+                  store.loadingServer = false;
+                  store.tryingServer = null;
+                }}
+                className="px-5 py-2 border border-white/20 rounded text-sm text-white/60 hover:text-white hover:border-white/40 transition-colors cursor-pointer"
+              >
+                Cancel
+              </button>
+            </>
+          )}
+
+          {serverFailed && !tryingServer && (
+            <div className="flex flex-col items-center gap-2">
+              <p className="text-red-400 text-sm">{serverFailed} failed to load</p>
+              <button
+                onClick={() => { store.serverFailed = null; store.error = false; }}
+                className="px-5 py-2 border border-white/20 rounded text-sm text-white/60 hover:text-white transition-colors cursor-pointer"
+              >
+                Dismiss
+              </button>
+            </div>
+          )}
+        </div>
+      )</>
+:
       <MediaPlayer
-        className="max-w-full max-h-full aspect-video bg-black  text-white font-sans overflow-hidden rounded-md"
+        className="max-w-full max-h-full aspect-video bg-black text-white font-sans overflow-hidden rounded-md"
         src={playerSources}
         crossOrigin
         playsInline
@@ -73,11 +115,11 @@ const Player = () => {
         ref={player}
       >
         <MediaProvider>
-                 <Poster
-          className="absolute inset-0 block h-full w-full rounded-md opacity-0 transition-opacity data-visible:opacity-100 object-cover"
-          src={backdrop || poster}
-          alt="poster"
-        />
+          <Poster
+            className="absolute inset-0 block h-full w-full rounded-md opacity-0 transition-opacity data-visible:opacity-100 object-cover"
+            src={backdrop || poster}
+            alt="poster"
+          />
           {subtitles.map((track) => (
             <Track
               key={track.url}
@@ -90,7 +132,7 @@ const Player = () => {
         <CenterPlayButton />
         <BufferingIndicator />
         <VideoLayout />
-      </MediaPlayer>
+      </MediaPlayer>}
     </div>
   );
 };

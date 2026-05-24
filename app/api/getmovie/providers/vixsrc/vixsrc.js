@@ -87,8 +87,7 @@ function buildPageUrl(media) {
 
 async function fetchApi(url) {
     try {
-        const proxied = `${WORKER_URL}/proxy?path=${encodeURIComponent(url)}`;
-        const response = await fetch(proxied);
+        const response = await fetch(url);
         if (response.status !== 200) return null;
         return await response.json();
     } catch (err) {

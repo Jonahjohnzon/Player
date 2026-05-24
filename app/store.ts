@@ -5,6 +5,7 @@ export const store = proxy({
     ServerinUse:ListServer[0].name,
     Check:false,
     loading:true,
+    loadingServer:false,
     Type:"",
     Season:"",
     Episode:"",
@@ -32,5 +33,7 @@ export const store = proxy({
     url:"",
     poster : "",
     backdrop : "",
-    overview : ""
+    overview : "",
+    tryingServer: null as string | null,
+    serverFailed: null as string | null,
 });
