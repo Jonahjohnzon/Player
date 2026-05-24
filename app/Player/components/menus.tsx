@@ -103,7 +103,11 @@ const ChangeServer = async ({ParamId, ServerinUse, Type, Season, Episode}: { Par
           store.title = response.title;
           store.sources = response.sources;
           store.subtitles = response.subtitles;
-          store.loading = false;
+          store.loading = false
+          store.title = response.title
+          store.poster = response.poster
+          store.backdrop = response.backdrop
+          store.overview = response.overview
   }
   catch(error){
     console.error('Error changing server:', error);

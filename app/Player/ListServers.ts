@@ -1,7 +1,7 @@
 export const ListServer = [
   {
-    id: 'Vidrock',
-    name: 'Vidrock',
+    id: 'Viper',
+    name: 'Viper',
  
   },
   // {

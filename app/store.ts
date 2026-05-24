@@ -29,5 +29,8 @@ export const store = proxy({
   }[],
     error:false,
     type:"movie",
-    url:""
+    url:"",
+    poster : "",
+    backdrop : "",
+    overview : ""
 });

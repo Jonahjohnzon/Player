@@ -21,25 +21,27 @@ export const utill = async (Tmdb_Id, Type, Season, Episode, Server) => {
         if (cache.has(key)) {
             const { data, timestamp } = cache.get(key);
             if (Date.now() - timestamp < ttl) {
-                console.log('[cache] hit:', key);
                 return data;
             }
             cache.delete(key);
         }
 
-        console.log('[cache] miss:', key);
 
         const media = { Tmdb_Id, Type, Season, Episode, Server };
         let data;
 
         switch (Server) {
-            case 'Vidrock':
+            case 'Viper':
                 const { vidRockProvider } = await import('../providers/vidrock/vidrock');
                 data = await vidRockProvider(media);
                 break;
             case 'Vixsrc':
                 const { vixSrcProvider } = await import('../providers/vixsrc/vixsrc');
                 data = await vixSrcProvider(media);
+                break;
+            case 'VidNest':
+                const { vidNestProvider } = await import('../providers/vidnest/vidnest');
+                data = await vidNestProvider(media);
                 break;
             default:
                 return { error: 'Unsupported server.' };

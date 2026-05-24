@@ -42,12 +42,10 @@ export function VideoLayout({ thumbnails }: VideoLayoutProps) {
             <Sliders.Volume />
           </div>
           <TimeGroup />
-
+          <Title />
           <div className="flex-1" />
-
           {/* Right side */}
           <div className="hidden sm:block">
-            <Title />
           </div>
           <Buttons.Caption tooltipPlacement="top" />
           <Menus.Settings placement="top end" tooltipPlacement="top" />
