@@ -25,9 +25,9 @@ import { VideoLayout } from './components/layouts/video-layout';
 
   return (
     <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none">
-      <div className="w-20 h-20 rounded-full cursor-pointer bg-black/40 backdrop-blur-sm border border-white/20 flex items-center justify-center transition-transform duration-200 scale-100">
+      <div className="sm:w-20 sm:h-20 h-10 w-10 rounded-full cursor-pointer bg-black/40 backdrop-blur-sm border border-white/20 flex items-center justify-center transition-transform duration-200 scale-100">
         <svg
-          className="w-10 h-10 text-white translate-x-1"
+          className="sm:w-10 sm:h-10 w-5 h-5 text-white translate-x-1"
           viewBox="0 0 24 24"
           fill="currentColor"
         >
