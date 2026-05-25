@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { FaTelegramPlane } from "react-icons/fa";
 
 const BASE = "https://api.screenopps.com/embed";
 
@@ -89,9 +90,14 @@ export default function WatchPage({ params, searchParams }) {
 
         {/* Hero */}
         <div className="pt-20 pb-14">
+          <div className="flex items-center justify-between ">
           <div className="inline-flex items-center gap-2 text-[#7b6fff] border border-[#7b6fff44] px-3 py-1 rounded-sm text-lg tracking-widest mb-6">
             <span className="w-1.5 h-1.5 rounded-full bg-[#7b6fff] animate-pulse" />
             live api
+          </div>
+          <FaTelegramPlane size={36} className="text-[#7b6fff] mb-4 cursor-pointer" onClick={()=>{
+            window.open("https://t.me/+LUkKjQPU1DQ5OTI0", "_blank");
+          }} />
           </div>
           <h1 className="text-5xl sm:text-6xl font-black leading-none tracking-tight text-white" style={{ fontFamily: "'Syne', sans-serif" }}>
             ScreenOpps<br />
