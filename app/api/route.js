@@ -17,7 +17,6 @@ const fetchTMDB = async (Tmdb_Id, Type, Season, Episode, TMDB_API_KEY) => {
 
         const data = await mainRes.json();
         const external = await externalRes.json();
-
         // tv uses 'name', movie uses 'title'
         const title = data.title || data.name || 'Unknown';
         const poster = data.poster_path
@@ -73,7 +72,6 @@ export const GET = async (req) => {
             utill(Tmdb_Id, Type, Season, Episode, Server),
             fetchTMDB(Tmdb_Id, Type, Season, Episode, TMDB_API_KEY)
         ]);
-
         return NextResponse.json({ ...result, ...tmdb })
     } catch (error) {
         console.error(error)

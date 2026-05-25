@@ -30,9 +30,8 @@ export function useServerFallback() {
             const response = params.Type === 'movie'
                 ? await GetMovieFetch({ Tmdb_Id: params.paramId, Type: 'movie', Server: server })
                 : await GetMovieFetch({ Tmdb_Id: params.paramId, Type: 'tv', Season: params.Season, Episode: params.Episode, Server: server })
-
             if (response.error || !response.sources?.length) return false
-
+            
             store.ParamId = params.paramId
             store.Type = params.Type
             store.ServerinUse = server
