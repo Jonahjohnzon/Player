@@ -54,11 +54,12 @@ async function getSources(media) {
     try {
         const pageUrl = buildPageUrl(media);
 
-        const sublink = await fetchApi(pageUrl);
+        const sublink = await fetchApi(`${WORKER_URL}/proxy?path=${encodeURIComponent(pageUrl)}`);
         
         if (!sublink) return emptyResult('Failed to fetch api');
-        
+            console.log('Sublink:', sublink);
         const html = await fetchPage(sublink.src);
+        console.log('Fetched HTML length:', html ? html.length : 'null');
         if (!html) return emptyResult('Failed to fetch second embed page');
        
         const tokenData = extractTokenData(html);
