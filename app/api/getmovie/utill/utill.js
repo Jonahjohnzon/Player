@@ -43,6 +43,14 @@ export const utill = async (Tmdb_Id, Type, Season, Episode, Server) => {
                 const { vidNestProvider } = await import('../providers/vidnest/vidnest');
                 data = await vidNestProvider(media);
                 break;
+            case 'VidZee':
+                const { vidZeeProvider } = await import('../providers/vidzee/vidzee');
+                data = await vidZeeProvider(media);
+                break;
+            case 'CineSu':
+                const { CineScrape } = await import('../providers/cine/cine');
+                data = await CineScrape(media);
+                break;
             default:
                 return { error: 'Unsupported server.' };
         }

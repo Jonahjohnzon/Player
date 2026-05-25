@@ -1,7 +1,7 @@
 import { encryptItemId } from './encrypt';
 
 
-const BASE_URL = 'https://vidrock.net/';
+const BASE_URL = 'https://vidrock.ru/';
 const SUB_BASE_URL = 'https://sub.vdrk.site';
 const WORKER_URL = "https://steam-proxy.hadezanubiz.workers.dev";
 
@@ -29,6 +29,7 @@ async function getSources(media) {
     try {
         const pageUrl = await buildUrl(media);
         const data = await fetchPage(pageUrl);
+
         if (!data) {
             return emptyResult('Failed to fetch page');
         }
