@@ -96,7 +96,7 @@ const Player = () => {
             <div className="flex flex-col items-center gap-2">
               <p className="text-red-400 text-sm">{serverFailed} failed to load</p>
               <button
-                onClick={() => { store.serverFailed = null; store.error = false; }}
+                onClick={() => { store.serverFailed = null; store.error = false; store.loadingServer = false; }}
                 className="px-5 py-2 border border-white/20 rounded text-sm text-white/60 hover:text-white transition-colors cursor-pointer"
               >
                 Dismiss
