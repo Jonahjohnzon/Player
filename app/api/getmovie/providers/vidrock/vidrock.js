@@ -29,7 +29,6 @@ async function getSources(media) {
     try {
         const pageUrl = await buildUrl(media);
         const data = await fetchPage(pageUrl);
-
         if (!data) {
             return emptyResult('Failed to fetch page');
         }
