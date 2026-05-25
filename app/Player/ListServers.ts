@@ -2,8 +2,12 @@ export const ListServer = [
   {
     id: 'Viper',
     name: 'Viper',
- 
+  },
   // },
+  // {
+  //   id: 'Anyembed',
+  //   name: 'Anyembed'
+  // }
   // {
   //   id: 'VidZee',
   //   name: 'VidZee'
@@ -12,9 +16,9 @@ export const ListServer = [
   //   id: 'CineSu',
   //   name: 'CineSu',
   // }
-  // {
-  //   id: 'Vixsrc',
-  //   name: 'Vixsrc',
+  {
+    id: 'Bear',
+    name: 'Bear',
   }
   
 ]

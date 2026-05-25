@@ -66,7 +66,6 @@ async function getSources(media) {
         if (!tokenData) return emptyResult('Invalid or expired token');
 
         const masterUrl = buildMasterUrl(tokenData);
-               console.log(tokenData, masterUrl)
         const playlistContent = await fetchPlaylist(masterUrl, pageUrl);
         if (!playlistContent) return emptyResult('Failed to fetch playlist');
 
