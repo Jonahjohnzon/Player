@@ -8,6 +8,11 @@ export const metadata = {
   manifest:"/manifest.json",
   title:{
     default: 'Screenopps || Movie and Entertainment API'},
+    icons:{
+        icon: '/logologo.png',        // from public folder
+      shortcut: '/logologo.png',
+      apple: '/logologo.png',       // iOS home screen icon
+    },
     metadataBase: new URL(`${baseURL}`),
     openGraph: {
       title: 'Screenopps | Entertainment and Movie API',
@@ -41,6 +46,7 @@ export default function RootLayout({
       lang="en"
     >
       <head><meta name="monetag" content="f812d08ef1bb5d01aaa6bdb313c1d2e4" suppressHydrationWarning/>
+      <link rel="icon" href="/logologo.png" sizes="any" />
          </head>
       <Body >{children}</Body>
     </html>
