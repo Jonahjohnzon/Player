@@ -3,6 +3,10 @@ export const ListServer = [
     id: 'Viper',
     name: 'Viper',
   },
+  //   {   
+  //   id: 'Eagle',
+  //   name: 'Eagle',
+  // },
   // },
   // {
   //   id: 'Anyembed',
@@ -16,9 +20,9 @@ export const ListServer = [
   //   id: 'CineSu',
   //   name: 'CineSu',
   // }
-  {
-    id: 'Bear',
-    name: 'Bear',
-  }
+  // {
+  //   id: 'Bear',
+  //   name: 'Bear',
+  // }
   
 ]

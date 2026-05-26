@@ -35,7 +35,7 @@ function parseVariants(content) {
 function parsePlaylist(content, masterUrl) {
     const variants = parseVariants(content);
     if (variants.length === 0) return emptyResult('No streams found in playlist');
-
+    console.log('Extracted token data:', variants);
     return {
         sources: [{
             url: masterUrl,
@@ -57,9 +57,8 @@ async function getSources(media) {
         const sublink = await fetchApi(`${WORKER_URL}/proxy?path=${encodeURIComponent(pageUrl)}`);
         
         if (!sublink) return emptyResult('Failed to fetch api');
-            console.log('Sublink:', sublink);
         const html = await fetchPage(sublink.src);
-        console.log('Fetched HTML length:', html ? html.length : 'null');
+       
         if (!html) return emptyResult('Failed to fetch second embed page');
        
         const tokenData = extractTokenData(html);
@@ -97,8 +96,10 @@ async function fetchApi(url) {
 }
 
 async function fetchPage(suburl) {
+    console.log('Fetching page:', suburl);
     try {
-        const response = await fetch(BASE_URL + suburl, { headers: HEADERS });
+        const response = await fetch(`${WORKER_URL}?path=${encodeURIComponent(BASE_URL + suburl)}&origin=${encodeURIComponent(BASE_URL)}&referer=${encodeURIComponent(BASE_URL)}`, { headers: HEADERS });
+        
         if (response.status !== 200) return null;
         return await response.text();
     } catch {

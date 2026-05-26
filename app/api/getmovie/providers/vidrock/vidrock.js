@@ -38,7 +38,6 @@ async function getSources(media) {
 
         for (const [name, stream] of Object.entries(data)) {
             if (!stream?.url) continue;
-
             if (stream.url.includes('hls2.vdrk.site')) {
                 const secondData = await fetchPage(stream.url);
                 if (!secondData) continue;
@@ -59,9 +58,11 @@ async function getSources(media) {
 
                 continue;
             }
-
+            
             sources.push({
-                url: stream.url,
+                url: stream.type === 'hls'
+            ? proxyUrl(stream.url) // 👈 proxy hls
+            : stream.url,
                 type: stream.type,
                 quality: 'auto',
                 label: name,
