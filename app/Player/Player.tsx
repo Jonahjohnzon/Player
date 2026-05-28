@@ -65,6 +65,9 @@ const Player = () => {
   type: source.type === 'hls'
     ? 'application/x-mpegurl' as const
     : 'video/mp4' as const,
+  quality: source.quality,
+  label: source.label,
+  audioTracks: source.audioTracks,
 }));
 
   return (
