@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 
 import {
@@ -9,7 +10,7 @@ import {
   type MenuPlacement,
   type TooltipPlacement,
 } from '@vidstack/react';
-import { LuSettings, LuCaptions, LuCloud,LuServer } from "react-icons/lu";
+import { LuSettings, LuCaptions, LuCloud,LuServer,LuText } from "react-icons/lu";
 import { useSnapshot } from 'valtio';
 import { store } from '@/app/store';
 import {
@@ -198,6 +199,91 @@ function CaptionSubmenu() {
   );
 }
 
+
+
+const ChangeServerType = async ({
+  src,
+  type,
+  quality,
+  label,
+  audioTracks,
+}: {
+  src: string;
+  type: string;
+  quality: string;
+  label: string;
+  audioTracks: never[];
+}) => {
+  try {
+    store.mainType = {
+      url :src,
+      type: type === 'hls'
+        ? 'application/x-mpegurl'
+        : 'video/mp4',
+      quality,
+      label,
+      audioTracks ,
+    } 
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const TypeofServer = ({ playerSources, mainType }:any) => {
+  const MainType = mainType.label || "Unknown";
+  return(
+       <Menu.Root>
+      <SubmenuButton
+        label="Sub - Servers"
+        hint={MainType}
+        disabled={false}
+        icon={LuText}
+      />
+      <Menu.Content className={submenuClass}>
+        <Menu.RadioGroup className="w-full max-h-48 flex flex-col" value={MainType}>
+          {playerSources.map(({ label, src, type, quality, audioTracks }: { label: string; src: string; type: string; quality: string; audioTracks: never[] }) => (
+            <Radio value={label} onSelect={() => {
+              ChangeServerType( {src, type, quality, label, audioTracks} );
+            }} key={src}>
+              {label}
+            </Radio>
+          ))}
+        </Menu.RadioGroup>
+      </Menu.Content>
+    </Menu.Root>
+  )
+}
+
+export function MenusType({ placement }: SettingsProps) {
+  const snap = useSnapshot(store);
+  const sources = snap.sources;
+  const mainType = snap.mainType;
+   const playerSources = sources.map((source) => ({
+    src: source.url,
+    type: source.type === 'hls'
+      ? 'application/x-mpegurl' as const
+      : 'video/mp4' as const,
+    quality: source.quality,
+    label: source.label,
+    audioTracks: source.audioTracks,
+  }));
+  return (
+   <Menu.Root className="parent">
+      <Tooltip.Root>
+        <Tooltip.Trigger asChild>
+          <Menu.Button className={buttonClass}>
+            <LuText className="h-7 sm:h-8 w-7 sm:w-8 transform transition-transform duration-200 ease-out group-data-open:opacity-50" />
+          </Menu.Button>
+        </Tooltip.Trigger>
+      </Tooltip.Root>
+      <Menu.Content className={menuClass} placement={placement}>
+        <TypeofServer playerSources={playerSources} mainType={mainType} />
+      </Menu.Content>
+    </Menu.Root>
+  )
+
+  }
 
 function Servermenu (){
   const options = ListServer

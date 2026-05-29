@@ -35,6 +35,7 @@ export function useServerFallback() {
             store.ParamId = params.paramId
             store.Type = params.Type
             store.ServerinUse = server
+            store.mainType = response.sources[0]
             store.sources = response.sources
             store.subtitles = response.subtitles
             store.M3u8Url = response.sources[0]?.url || ''

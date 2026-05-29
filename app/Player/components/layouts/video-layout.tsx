@@ -30,9 +30,13 @@ export function VideoLayout({ thumbnails }: VideoLayoutProps) {
         className={`${captionStyles.captions} media-preview:opacity-0 media-controls:bottom-21.25 media-captions:opacity-100 absolute inset-0 bottom-2 z-10 select-none wrap-break-word opacity-100 transition-[opacity,bottom] duration-300`}
       />
        {/* Top left server menu — outside controls */}
-  <div className="absolute top-5 left-5 z-20 opacity-0 pointer-events-none transition-opacity duration-300 media-controls:opacity-100 media-controls:pointer-events-auto media-paused:opacity-100 media-paused:pointer-events-auto">
+  <div className="absolute w-full flex justify-between top-5  px-5 left-0 z-20 opacity-0  pointer-events-none transition-opacity duration-300
+    media-controls:opacity-100 media-controls:pointer-events-auto">
     <Menus.Server placement="bottom start" tooltipPlacement="bottom" />
+    <Menus.MenusType placement="bottom start" tooltipPlacement="bottom" />
   </div>
+ 
+  
       <Controls.Root
         className={`${styles.controls} absolute inset-0 z-10 flex h-full w-full flex-col bg-linear-to-t from-black/20 to-transparent 
     opacity-0 pointer-events-none transition-opacity duration-300
@@ -63,6 +67,8 @@ export function VideoLayout({ thumbnails }: VideoLayoutProps) {
           <Buttons.Caption tooltipPlacement="top" />
           <Menus.Settings placement="top end" tooltipPlacement="top" />
           <Menus.VideoQualitySubmenu placement="top end" tooltipPlacement="top" />
+              
+
           <div className="hidden sm:block">
             <Buttons.PIP tooltipPlacement="top" />
           </div>

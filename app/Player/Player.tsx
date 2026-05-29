@@ -24,7 +24,7 @@ import { VideoLayout } from './components/layouts/video-layout';
   if (!paused) return null;
 
   return (
-    <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none">
+    <div className="absolute overflow-hidden inset-0 z-10 flex items-center justify-center pointer-events-none">
       <div className="sm:w-20 sm:h-20 h-10 w-10 rounded-full cursor-pointer bg-black/40 backdrop-blur-sm border border-white/20 flex items-center justify-center transition-transform duration-200 scale-100">
         <svg
           className="sm:w-10 sm:h-10 w-5 h-5 text-white translate-x-1"
@@ -43,7 +43,7 @@ import { VideoLayout } from './components/layouts/video-layout';
 
 const Player = () => {
  const snap = useSnapshot(store);
-  const sources = snap.sources;
+  const source =  snap.mainType
   const subtitles = snap.subtitles;
   const poster = snap.poster;
   const backdrop = snap.backdrop;
@@ -60,22 +60,23 @@ const Player = () => {
     }
   }
 
- const playerSources: MediaSrc[] = sources.map((source) => ({
-  src: source.url,
-  type: source.type === 'hls'
-    ? 'application/x-mpegurl' as const
-    : 'video/mp4' as const,
+ const playerSources={
+ src: source.url,
+  type:
+    source.type === 'hls'
+      ? 'application/x-mpegurl' as const
+      : 'video/mp4' as const,
   quality: source.quality,
   label: source.label,
   audioTracks: source.audioTracks,
-}));
+};
 
   return (
-    <div className="bg-black h-screen overflow-hidden flex justify-center items-center relative">
+    <div className="bg-black h-screen w-screen overflow-hidden ">
 
       {/* Loading overlay — outside MediaPlayer */}
       {loading ? <> (
-        <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-black/80 backdrop-blur-sm gap-4">
+        <div className="absolute overflow-hidden inset-0 z-50 flex flex-col items-center justify-center bg-black/80 backdrop-blur-sm gap-4">
           {tryingServer && (
             <>
               <div className="w-10 h-10 rounded-full border-2 border-white/20 border-t-white animate-spin" />
@@ -110,7 +111,7 @@ const Player = () => {
       )</>
 :
       <MediaPlayer
-        className="max-w-full max-h-full aspect-video bg-black text-white font-sans overflow-hidden rounded-md"
+        className="max-w-full max-h-full  relative bg-black text-white font-sans  rounded-md"
         src={playerSources}
         crossOrigin
         playsInline
@@ -119,7 +120,7 @@ const Player = () => {
       >
         <MediaProvider>
           <Poster
-            className="absolute inset-0 block h-full w-full rounded-md opacity-0 transition-opacity data-visible:opacity-100 object-cover"
+            className="absolute inset-0 block h-full w-full overflow-hidden rounded-md opacity-0 transition-opacity data-visible:opacity-100 object-cover"
             src={backdrop || poster}
             alt="poster"
           />

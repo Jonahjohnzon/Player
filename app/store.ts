@@ -36,4 +36,11 @@ export const store = proxy({
     overview : "",
     tryingServer: null as string | null,
     serverFailed: null as string | null,
+    mainType: {
+    url: '',
+    type: 'application/x-mpegurl',
+    quality: '',
+    label: '',
+    audioTracks: [],
+    }
 });
