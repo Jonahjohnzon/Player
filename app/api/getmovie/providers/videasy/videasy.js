@@ -35,9 +35,7 @@ async function fetchPage(url) {
 
 const getSources = async (media) => {
         try {
-            console.log('Fetching sources for media:', media);
             const pageContent = await fetchPage(`${PLAYER_URL}/movie/${media.Tmdb_Id}`);
-            console.log(pageContent);
             if (!pageContent) return { error: 'Failed to fetch page content.' };
 
         }

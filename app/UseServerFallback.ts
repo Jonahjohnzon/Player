@@ -31,7 +31,7 @@ export function useServerFallback() {
                 ? await GetMovieFetch({ Tmdb_Id: params.paramId, Type: 'movie', Server: server })
                 : await GetMovieFetch({ Tmdb_Id: params.paramId, Type: 'tv', Season: params.Season, Episode: params.Episode, Server: server })
             if (response.error || !response.sources?.length) return false
-            console.log(`Successfully loaded from ${response}`)
+            console.log(`Successfully loaded from ${response.sources}`)
             store.ParamId = params.paramId
             store.Type = params.Type
             store.ServerinUse = server
