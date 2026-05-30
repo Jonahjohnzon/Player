@@ -52,7 +52,7 @@ async function getSources(media) {
                             language: stream.language === 'English' ? 'eng' : 'unknown',
                             label: stream.language ?? 'Unknown'
                         }],
-                        provider: { id: vidRockProvider.id, name: vidRockProvider.name }
+                        provider: {  }
                     });
                 });
 
@@ -70,7 +70,7 @@ async function getSources(media) {
                     language: stream.language === 'English' ? 'eng' : 'unknown',
                     label: stream.language ?? 'Unknown'
                 }],
-                provider: { id: vidRockProvider.id, name: vidRockProvider.name }
+                provider: {  }
             });
         }
 
