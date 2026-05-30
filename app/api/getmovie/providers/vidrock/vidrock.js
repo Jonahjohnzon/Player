@@ -3,7 +3,7 @@ import { encryptItemId } from './encrypt';
 
 const BASE_URL = 'https://vidrock.ru/';
 const SUB_BASE_URL = 'https://sub.vdrk.site';
-const WORKER_URL = process.env.PROXY_URL || 'https://proxy.jonahjohnzon.workers.dev/';
+const WORKER_URL = 'https://proxy.jonahjohnzon.workers.dev/';
 
 function proxyUrl(url) {
   return `${WORKER_URL}/proxy?path=${encodeURIComponent(url)}`;
