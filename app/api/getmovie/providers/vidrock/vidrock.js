@@ -4,6 +4,45 @@ import { getCurrentWorker } from '../proxy';
 const BASE_URL = 'https://vidrock.ru/';
 const SUB_BASE_URL = 'https://sub.vdrk.site';
 
+function isBetterQuality(a, b) {
+  const rank = {
+    '1080p': 3,
+    '720p': 2,
+    '480p': 1,
+    '360p': 0,
+  };
+
+  return (rank[a] || 0) > (rank[b] || 0);
+}
+
+function collapseToSingleUrl(sources) {
+  const map = new Map();
+
+  for (const src of sources) {
+    const key = src.label;
+
+    if (!map.has(key)) {
+      map.set(key, src);
+      continue;
+    }
+
+    const existing = map.get(key);
+
+    // Keep BEST quality for MP4
+    if (src.type === 'mp4') {
+      if (isBetterQuality(src.quality, existing.quality)) {
+        map.set(key, src);
+      }
+    }
+
+    // Prefer HLS over MP4 if both exist
+    if (src.type === 'hls') {
+      map.set(key, src);
+    }
+  }
+
+  return Array.from(map.values());
+}
 
 function proxyUrl(url) {
   const worker = getCurrentWorker();
@@ -76,8 +115,9 @@ async function getSources(media) {
         }
 
         const subtitles = await fetchSubtitles(media);
+        const collapsedSources = collapseToSingleUrl(sources);
 
-        return { sources, subtitles, diagnostics: [] };
+        return { sources: collapsedSources, subtitles, diagnostics: [] };
     } catch (error) {
         return emptyResult(
             error instanceof Error ? error.message : 'Unknown provider error'
