@@ -1,12 +1,13 @@
 import { encryptItemId } from './encrypt';
-
+import { getCurrentWorker } from '../proxy';
 
 const BASE_URL = 'https://vidrock.ru/';
 const SUB_BASE_URL = 'https://sub.vdrk.site';
-const WORKER_URL =  'https://proxy.jonahjohnzon.workers.dev/';
+
 
 function proxyUrl(url) {
-  return `${WORKER_URL}/proxy?path=${encodeURIComponent(url)}`;
+  const worker = getCurrentWorker();
+  return `${worker}/proxy?path=${encodeURIComponent(url)}`;
 }
 const HEADERS = {
     'User-Agent':
