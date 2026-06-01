@@ -1,4 +1,4 @@
-
+import { getCurrentWorker } from '../proxy';
 
 const BASE_URL = 'https://vixsrc.to';
 const WORKER_URL = "https://steam-proxy.hadezanubiz.workers.dev";
@@ -11,6 +11,10 @@ const HEADERS = {
 };
 
 
+function proxyUrl(url) {
+  const worker = getCurrentWorker();
+  return `${worker}/proxy?path=${encodeURIComponent(url)}`;
+}
 
 export const vixSrcProvider = async (media) => {
     return getSources(media);
@@ -35,7 +39,6 @@ function parseVariants(content) {
 function parsePlaylist(content, masterUrl) {
     const variants = parseVariants(content);
     if (variants.length === 0) return emptyResult('No streams found in playlist');
-    console.log('Extracted token data:', variants);
     return {
         sources: [{
             url: masterUrl,
@@ -54,7 +57,7 @@ async function getSources(media) {
     try {
         const pageUrl = buildPageUrl(media);
 
-        const sublink = await fetchApi(`${WORKER_URL}/proxy?path=${encodeURIComponent(pageUrl)}`);
+        const sublink = await fetchApi(pageUrl);
         
         if (!sublink) return emptyResult('Failed to fetch api');
         const html = await fetchPage(sublink.src);
@@ -96,12 +99,11 @@ async function fetchApi(url) {
 }
 
 async function fetchPage(suburl) {
-    console.log('Fetching page:', suburl);
     try {
-        const response = await fetch(`${WORKER_URL}?path=${encodeURIComponent(BASE_URL + suburl)}&origin=${encodeURIComponent(BASE_URL)}&referer=${encodeURIComponent(BASE_URL)}`, { headers: HEADERS });
+        const response = await fetch(BASE_URL + suburl, { headers: HEADERS });
         
-        if (response.status !== 200) return null;
-        return await response.text();
+        if (response.status !== 200) return null; 
+        return await response.text(); 
     } catch {
         return null;
     }
