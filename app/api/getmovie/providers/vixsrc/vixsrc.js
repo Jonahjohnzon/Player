@@ -89,7 +89,7 @@ function buildPageUrl(media) {
 
 async function fetchApi(url) {
     try {
-        const response = await fetch(url);
+        const response = await fetch(url,{ headers: HEADERS });
         if (response.status !== 200) return null;
         return await response.json();
     } catch (err) {

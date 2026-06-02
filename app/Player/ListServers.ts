@@ -20,9 +20,9 @@ export const ListServer = [
   //   id: 'CineSu',
   //   name: 'CineSu',
   // }
-  // {
-  //   id: 'Bear',
-  //   name: 'Bear',
-  // }
+  {
+    id: 'Bear',
+    name: 'Bear',
+  }
   
 ]
