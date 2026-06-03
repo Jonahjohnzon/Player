@@ -2,8 +2,9 @@
 const { NextResponse } = await import('next/server')
 const { utill } = await import('./getmovie/utill/utill')
 
-const fetchTMDB = async (Tmdb_Id, Type, Season, Episode, TMDB_API_KEY) => {
+export const fetchTMDB = async (Tmdb_Id, Type, Season, Episode) => {
     try {
+        const TMDB_API_KEY = process.env.DB_BEARER;
         const base = `https://api.themoviedb.org/3/${Type}/${Tmdb_Id}`;
         const headers = {
             Authorization: `Bearer ${TMDB_API_KEY}`,
@@ -50,7 +51,7 @@ const fetchTMDB = async (Tmdb_Id, Type, Season, Episode, TMDB_API_KEY) => {
 };
 
 export const GET = async (req) => {
-    const TMDB_API_KEY = process.env.DB_BEARER;
+    
     try {
         const Url = new URL(req.url)
         const Tmdb_Id = Url.searchParams.get('Tmdb_Id')
@@ -70,7 +71,7 @@ export const GET = async (req) => {
         // fetch stream sources and TMDB info in parallel
         const [result, tmdb] = await Promise.all([
             utill(Tmdb_Id, Type, Season, Episode, Server),
-            fetchTMDB(Tmdb_Id, Type, Season, Episode, TMDB_API_KEY)
+            fetchTMDB(Tmdb_Id, Type, Season, Episode)
         ]);
         return NextResponse.json({ ...result, ...tmdb })
     } catch (error) {

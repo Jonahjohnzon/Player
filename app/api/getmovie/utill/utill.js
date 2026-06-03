@@ -39,25 +39,9 @@ export const utill = async (Tmdb_Id, Type, Season, Episode, Server) => {
                 const { vixSrcProvider } = await import('../providers/vixsrc/vixsrc');
                 data = await vixSrcProvider(media);
                 break;
-            case 'VidNest':
-                const { vidNestProvider } = await import('../providers/vidnest/vidnest');
-                data = await vidNestProvider(media);
-                break;
-            case 'VidZee':
-                const { vidZeeProvider } = await import('../providers/vidzee/vidzee');
-                data = await vidZeeProvider(media);
-                break;
-            case 'CineSu':
-                const { CineScrape } = await import('../providers/cine/cine');
-                data = await CineScrape(media);
-                break;
-            case 'Anyembed':
-                const { AnyembedProvider } = await import('../providers/anyembed/anyembed');
-                data = await AnyembedProvider(media);
-                break;
-            case 'Eagle':
-                const { EagleProvider } = await import('../providers/videasy/videasy');
-                data = await EagleProvider(media);
+            case 'Lion':
+                const { icefySourcerer } = await import('../providers/icefy/icefy.js');
+                data = await icefySourcerer(media);
                 break;
             default:
                 return { error: 'Unsupported server.' };

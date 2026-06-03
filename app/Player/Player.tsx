@@ -71,8 +71,10 @@ const Player = () => {
   audioTracks: source.audioTracks,
 };
 
+const storedata = useSnapshot(store);
+
   return (
-    <div className="bg-black h-screen w-screen overflow-hidden ">
+    <div className="bg-black h-screen w-screen flex flex-col justify-items items-center overflow-hidden ">
 
       {/* Loading overlay — outside MediaPlayer */}
       {loading ? <> (
@@ -100,7 +102,7 @@ const Player = () => {
             <div className="flex flex-col items-center gap-2">
               <p className="text-red-400 text-sm">{serverFailed} failed to load</p>
               <button
-                onClick={() => { store.serverFailed = null; store.error = false; store.loadingServer = false; }}
+                onClick={() => { store.serverFailed = null; store.error = false; store.loadingServer = false;  store.ServerinUse = storedata.PreviousServer; }}
                 className="px-5 py-2 border border-white/20 rounded text-sm text-white/60 hover:text-white transition-colors cursor-pointer"
               >
                 Dismiss
@@ -111,7 +113,7 @@ const Player = () => {
       )</>
 :
       <MediaPlayer
-        className="max-w-full max-h-full  relative bg-black text-white font-sans  rounded-md"
+        className="max-w-full max-h-full flex flex-col justify-items items-center   relative bg-black text-white font-sans  rounded-md"
         src={playerSources}
         crossOrigin
         playsInline

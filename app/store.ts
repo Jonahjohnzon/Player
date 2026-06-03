@@ -3,6 +3,7 @@ import { ListServer } from "./Player/ListServers";
 export const store = proxy({
     Server:  ListServer[0],
     ServerinUse:ListServer[0].name,
+    PreviousServer: "",
     Check:false,
     loading:true,
     loadingServer:false,

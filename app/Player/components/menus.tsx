@@ -91,14 +91,17 @@ function AudioSubmenu() {
   );
 }
 
-const ChangeServer = async ({ ParamId, ServerinUse, Type, Season, Episode }: {
+const ChangeServer = async ({ ParamId, ServerinUse, Type, Season, Episode, snapshot }: {
     ParamId: string;
     ServerinUse: string;
     Type: string;
     Season: string;
     Episode: string;
+    snapshot:any
 }) => {
     try {
+       
+        store.PreviousServer = snapshot.ServerinUse; // store the previous server before changing
         store.loadingServer = true;
         store.ServerinUse = ServerinUse;
         store.tryingServer = ServerinUse; // show which server is being tried
@@ -292,7 +295,7 @@ function Servermenu (){
   const Type = useSnapshot(store).Type;
   const Season = useSnapshot(store).Season;
   const Episode = useSnapshot(store).Episode;
-
+   const snapshot = useSnapshot(store);
   return (
     <Menu.Root>
       <SubmenuButton
@@ -305,7 +308,7 @@ function Servermenu (){
         <Menu.RadioGroup className="w-full max-h-48 flex flex-col" value={ServerinUse}>
           {options.map(({ name, id }) => (
             <Radio value={name} onSelect={() => {
-              ChangeServer({ParamId, ServerinUse:name, Type, Season, Episode});
+              ChangeServer({ParamId, ServerinUse:name, Type, Season, Episode,snapshot});
             }} key={id}>
               {name}
             </Radio>

@@ -7,6 +7,7 @@ const BASE = "https://api.screenopps.com/embed";
 export default function DocsPage() {
   const [type, setType] = useState<"movie" | "tv">("movie");
   const [tmdb, setTmdb] = useState("533535");
+  const [stmdb, setStmdb] = useState("1399")
   const [season, setSeason] = useState("1");
   const [episode, setEpisode] = useState("1");
   const [loaded, setLoaded] = useState(false);
@@ -16,7 +17,7 @@ export default function DocsPage() {
   const embedUrl =
     type === "movie"
       ? `${BASE}/movie/${tmdb || "TMDB_ID"}`
-      : `${BASE}/tv/${tmdb || "TMDB_ID"}/${season}/${episode}`;
+      : `${BASE}/tv/${stmdb || "TMDB_ID"}/${season}/${episode}`;
 
   const copy = (text: string, key: string) => {
     navigator.clipboard.writeText(text);
@@ -86,7 +87,7 @@ export default function WatchPage({ params, searchParams }) {
       {/* font import */}
       <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@700;800&display=swap');`}</style>
 
-      <div className="max-w-3xl mx-auto px-6 pb-24">
+      <div className="max-w-3xl  mx-auto  pb-24">
 
         {/* Hero */}
         <div className="pt-20 pb-14">
@@ -184,8 +185,16 @@ export default function WatchPage({ params, searchParams }) {
               <div className="flex flex-col gap-1.5">
                 <label className="text-lg text-[#4a4760] tracking-widest uppercase">TMDB ID</label>
                 <input
-                  value={tmdb}
-                  onChange={e => { setTmdb(e.target.value); setLoaded(false); }}
+                  value={type == "movie" ? tmdb : stmdb}
+                  onChange={e => { 
+                    if(type == "movie")
+                    {
+                    setTmdb(e.target.value)
+                  }
+                  else{
+                    setStmdb(e.target.value)
+                  }; 
+                  setLoaded(false); }}
                   placeholder="e.g. 533535"
                   className="bg-[#07060f] border border-[#1e1c2e] text-[#c8c4e8] px-3 py-2 rounded-sm text-lg font-mono outline-none focus:border-[#7b6fff66] transition-colors placeholder:text-[#2e2c45]"
                 />
