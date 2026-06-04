@@ -1,4 +1,5 @@
 const WORKERS = [
+  'https://lively-band-0eab.ejo543210.workers.dev/',
   'https://spring-salad-1aa3.willjohnsonn150.workers.dev/',
   'https://blue-fog-eb04.roseunogwu63.workers.dev/',
   'https://proxy.jonahjohnzon.workers.dev',
