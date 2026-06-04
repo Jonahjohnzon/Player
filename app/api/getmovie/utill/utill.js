@@ -43,6 +43,11 @@ export const utill = async (Tmdb_Id, Type, Season, Episode, Server) => {
                 const { icefySourcerer } = await import('../providers/icefy/icefy.js');
                 data = await icefySourcerer(media);
                 break;
+            case 'Dove':
+                const {xpassProvider} = await import('../providers/xpass/xpass.js')
+                data = await xpassProvider(media)
+                break;
+
             default:
                 return { error: 'Unsupported server.' };
         }

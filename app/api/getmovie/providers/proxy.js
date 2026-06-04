@@ -1,6 +1,9 @@
 const WORKERS = [
+  'https://spring-salad-1aa3.willjohnsonn150.workers.dev/',
+  'https://blue-fog-eb04.roseunogwu63.workers.dev/',
   'https://proxy.jonahjohnzon.workers.dev',
   'https://steam-proxy.hadezanubiz.workers.dev',
+
 ];
 
 export function getCurrentWorker() {

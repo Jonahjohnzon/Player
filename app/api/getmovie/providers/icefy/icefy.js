@@ -44,6 +44,7 @@ function proxyUrl(url) {
     }
 
 const getSource = async (media) => {
+    try{
     const pageUrl = await buildUrl(media);
     
     const data = await fetchPage(pageUrl);
@@ -72,6 +73,16 @@ const getSource = async (media) => {
             });
             
     return { sources, subtitles: [], diagnostics: [] };
+        }
+        catch{
+              
+        return { sources: [], subtitles: [], diagnostics: [  {
+                code: 'PROVIDER_ERROR',
+                message: `Icefy: Failed to fetch page`,
+                field: '',
+                severity: 'error'
+            }] };
+        }
 }
 
 export const icefySourcerer = (media)=>{
