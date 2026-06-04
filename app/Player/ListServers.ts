@@ -7,10 +7,10 @@ export const ListServer = [
     id: 'Viper',
     name: 'Viper',
   },
-  {
-    id : 'Dove',
-    name : 'Dove'
-  }
+  // {
+  //   id : 'Dove',
+  //   name : 'Dove'
+  // }
 
   //   {   
   //   id: 'Eagle',
