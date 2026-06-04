@@ -23,6 +23,8 @@ export function useServerFallback() {
         setTryingServer(null)
     }
 
+    
+
     const tryServer = async (server: string, params: MediaParams): Promise<boolean> => {
         try {
             setTryingServer(server)
@@ -49,7 +51,7 @@ export function useServerFallback() {
         }
     }
 
-    const load = async (params: MediaParams) => {
+        const load = async (params: MediaParams) => {
         reset()
         store.loading = true
         store.ParamId = params.paramId
@@ -75,3 +77,76 @@ export function useServerFallback() {
 
     return { load, tryingServer, triedServers, allFailed, reset }
 }
+
+
+
+export const loadNextServer = async () => {
+ 
+
+  store.loadingServer = true;
+  store.serverFailed = null;
+
+  const currentIndex = ListServer.findIndex(
+    (s) => s.name === store.ServerinUse
+  );
+
+  const remainingServers = ListServer.slice(currentIndex + 1);
+
+  const params: MediaParams = {
+    paramId: store.ParamId,
+    Type: store.Type as MediaParams['Type'],
+    Season: store.Season,
+    Episode: store.Episode,
+  };
+
+  for (const server of remainingServers) {
+    try {
+      store.tryingServer = server.name;
+
+      const response =
+        params.Type === "movie"
+          ? await GetMovieFetch({
+              Tmdb_Id: params.paramId,
+              Type: "movie",
+              Server: server.name,
+            })
+          : await GetMovieFetch({
+              Tmdb_Id: params.paramId,
+              Type: "tv",
+              Season: params.Season,
+              Episode: params.Episode,
+              Server: server.name,
+            });
+
+      if (response.error || !response.sources?.length) {
+        continue;
+      }
+
+      store.PreviousServer = store.ServerinUse;
+      store.ServerinUse = server.name;
+
+      store.mainType = response.sources[0];
+      store.sources = response.sources;
+      store.subtitles = response.subtitles;
+      store.M3u8Url = response.sources[0]?.url || "";
+
+      store.title = response.title;
+      store.poster = response.poster;
+      store.backdrop = response.backdrop;
+      store.overview = response.overview;
+
+      store.tryingServer = null;
+      store.loadingServer = false;
+
+      return true;
+    } catch (err) {
+      console.error(server.name, err);
+    }
+  }
+
+  store.serverFailed = store.ServerinUse;
+  store.tryingServer = null;
+  store.loadingServer = false;
+
+  return false;
+};

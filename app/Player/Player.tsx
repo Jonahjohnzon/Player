@@ -4,7 +4,7 @@ import { useSnapshot } from "valtio";
 import { store } from '@/app/store';
 import { useRef } from 'react';
 import {BufferingIndicator} from './components/layouts/buffer';
-import type { MediaSrc } from '@vidstack/react';
+import {loadNextServer} from '../UseServerFallback'
 import {
   isHLSProvider,
   MediaPlayer,
@@ -57,8 +57,22 @@ const Player = () => {
   function onProviderChange(provider: MediaProviderAdapter | null) {
     if (isHLSProvider(provider)) {
       provider.config = {};
+      
     }
   }
+
+  const switchToNextServer = async () => {
+  if (store.loadingServer) return;
+
+  store.loadingServer = true;
+  store.tryingServer = "Next Server";
+
+  try {
+    await loadNextServer();
+  } catch {
+    store.serverFailed = store.ServerinUse;
+  }
+};
 
  const playerSources={
  src: source.url,
@@ -74,7 +88,7 @@ const Player = () => {
 const storedata = useSnapshot(store);
 
   return (
-    <div className="bg-black h-screen w-screen flex flex-col justify-items items-center overflow-hidden ">
+    <div className="bg-black h-screen w-screen flex flex-col justify-center items-center overflow-hidden ">
 
       {/* Loading overlay — outside MediaPlayer */}
       {loading ? <> (
@@ -113,12 +127,17 @@ const storedata = useSnapshot(store);
       )</>
 :
       <MediaPlayer
-        className="max-w-full max-h-full flex flex-col justify-items items-center   relative bg-black text-white font-sans  rounded-md"
+        className="max-w-full max-h-full    relative bg-black text-white font-sans  rounded-md"
         src={playerSources}
+        key={store.M3u8Url}
         crossOrigin
         playsInline
         onProviderChange={onProviderChange}
         ref={player}
+         onError={() => {
+              
+     switchToNextServer();
+  }}
       >
         <MediaProvider>
           <Poster
