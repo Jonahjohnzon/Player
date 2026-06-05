@@ -57,7 +57,6 @@ const Player = () => {
   function onProviderChange(provider: MediaProviderAdapter | null) {
     if (isHLSProvider(provider)) {
       provider.config = {};
-      
     }
   }
 
@@ -135,7 +134,6 @@ const storedata = useSnapshot(store);
         onProviderChange={onProviderChange}
         ref={player}
          onError={() => {
-              
      switchToNextServer();
   }}
       >

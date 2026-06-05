@@ -31,7 +31,7 @@ export function VideoLayout({ thumbnails }: VideoLayoutProps) {
       />
        {/* Top left server menu — outside controls */}
   <div className="absolute w-full flex justify-between top-5  px-5 left-0 z-20 opacity-0  pointer-events-none transition-opacity duration-300
-    media-controls:opacity-100 media-controls:pointer-events-auto">
+    media-controls:opacity-100 media-error:opacity-100 media-error:pointer-events-auto media-controls:pointer-events-auto">
     <Menus.Server placement="bottom start" tooltipPlacement="bottom" />
     <Menus.MenusType placement="bottom start" tooltipPlacement="bottom" />
   </div>

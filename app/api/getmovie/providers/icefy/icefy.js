@@ -1,4 +1,4 @@
-import {getCurrentWorker} from '../proxy';
+import {getCurrentWorker2} from '../proxy';
 
 const BASE_URL = 'https://streams.icefy.top';
 
@@ -39,8 +39,8 @@ async function buildUrl(media) {
 }
 
 function proxyUrl(url) {
-      const worker = getCurrentWorker();
-      return `${worker}/proxy?path=${encodeURIComponent(url)}&origin=${encodeURIComponent(BASE_URL)}&referer=${encodeURIComponent(BASE_URL)}`;
+      const worker = getCurrentWorker2();
+      return `${worker}/proxy?path=${encodeURIComponent(url)}`;
     }
 
 const getSource = async (media) => {

@@ -1,7 +1,7 @@
 import * as cheerio from 'cheerio'
 import {getCurrentWorker} from '../proxy';
 const BASE_URL = 'https://play.xpass.top';
-const BASE_URLS = 'https://play.xpass.top/';
+
 
 const headers = {
   'User-Agent':
@@ -86,8 +86,8 @@ function detectType(url) {
 }
 
 function proxyUrl(url) {
-      const worker = getCurrentWorker();
-      return `${worker}/proxy?path=${encodeURIComponent(url)}&origin=${encodeURIComponent(BASE_URL)}&referer=${encodeURIComponent(BASE_URLS)}`;
+      const worker = "https://nodejs-production-ed8d.up.railway.app"
+      return `${worker}/proxy?path=${encodeURIComponent(url)}&origin=${encodeURIComponent(BASE_URL)}&referer=${encodeURIComponent(BASE_URL + "/")}`
     }
 
 const getSources = async (media) =>{
@@ -103,10 +103,9 @@ const getSources = async (media) =>{
     const M3u8Sources = await FetchUrl(TIK)
 
     let sourcesArr = []
-    console.log(M3u8Sources)
    M3u8Sources[0].sources.forEach((stream) => {
   const url = stream.file;
-
+  
   sourcesArr.push({
     url: stream.type === "hls" ? proxyUrl(url) : url,
     type: detectType(url),

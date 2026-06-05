@@ -7,6 +7,8 @@ export const store = proxy({
     Check:false,
     loading:true,
     loadingServer:false,
+    stopTrying : false,
+    attempt: 0,
     Type:"",
     Season:"",
     Episode:"",

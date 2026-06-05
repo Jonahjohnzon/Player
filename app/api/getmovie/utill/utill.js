@@ -18,13 +18,16 @@ export const utill = async (Tmdb_Id, Type, Season, Episode, Server) => {
         const key = getCacheKey(Tmdb_Id, Type, Season, Episode, Server);
         const ttl = getTTL(Server);
 
-        if (cache.has(key)) {
-            const { data, timestamp } = cache.get(key);
-            if (Date.now() - timestamp < ttl) {
-                return data;
-            }
-            cache.delete(key);
+      if (Server !== "Dove" && cache.has(key)) {
+        const { data, timestamp } = cache.get(key);
+
+        if (Date.now() - timestamp < ttl) {
+            return data;
         }
+
+        cache.delete(key);
+    }
+
 
 
         const media = { Tmdb_Id, Type, Season, Episode, Server };
@@ -52,7 +55,7 @@ export const utill = async (Tmdb_Id, Type, Season, Episode, Server) => {
                 return { error: 'Unsupported server.' };
         }
 
-        if (data?.sources?.length > 0) {
+        if (data?.sources?.length > 0 && Server !== "Dove") {
             cache.set(key, { data, timestamp: Date.now() });
         }
 
