@@ -71,7 +71,6 @@ const getSource = async (media) => {
                 }],
                 provider: { id: "icefy", name: "icefy" }
             });
-            
     return { sources, subtitles: [], diagnostics: [] };
         }
         catch{
