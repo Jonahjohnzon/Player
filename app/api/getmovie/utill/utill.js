@@ -38,9 +38,9 @@ export const utill = async (Tmdb_Id, Type, Season, Episode, Server) => {
                 const { vidRockProvider } = await import('../providers/vidrock/vidrock');
                 data = await vidRockProvider(media);
                 break;
-            case 'Bear':
-                const { vixSrcProvider } = await import('../providers/vixsrc/vixsrc');
-                data = await vixSrcProvider(media);
+            case 'Eagle':
+                const { novaProvider } = await import('../providers/nova/nova.js');
+                data = await novaProvider(media);
                 break;
             case 'Lion':
                 const { icefySourcerer } = await import('../providers/icefy/icefy.js');

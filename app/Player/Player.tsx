@@ -51,6 +51,9 @@ const Player = () => {
   const tryingServer = snap.tryingServer;
   const serverFailed = snap.serverFailed;
   const player = useRef<MediaPlayerInstance>(null);
+  const vidfastUrl = snap.Type === 'movie'
+  ? `https://vidfast.pro/movie/${snap.ParamId}`
+  : `https://vidfast.pro/tv/${snap.ParamId}/${snap.Season}/${snap.Episode}`;
 
 
 
@@ -124,8 +127,28 @@ const storedata = useSnapshot(store);
           )}
         </div>
       )</>
-:
-      <MediaPlayer
+:<>{snap.vidfastFallback ? (
+  <div className="relative w-full h-full">
+    {/* Optional: header showing fallback is active */}
+    <div className="absolute top-2 left-2 z-10 flex items-center gap-2 px-3 py-1 rounded bg-black/60 text-white/60 text-xs">
+      <span className="w-1.5 h-1.5 rounded-full bg-yellow-400 animate-pulse" />
+      Using backup server
+      <button
+        onClick={() => { store.vidfastFallback = false; store.loadingServer = false; }}
+        className="ml-2 text-white/40 hover:text-white transition-colors"
+      >
+        ✕
+      </button>
+    </div>
+    <iframe
+      src={vidfastUrl}
+      className="w-full h-full border-0 rounded-md"
+      allowFullScreen
+      allow="autoplay; fullscreen; picture-in-picture"
+    />
+  </div>
+) :
+      (<MediaPlayer
         className="max-w-full max-h-full    relative bg-black text-white font-sans  rounded-md"
         src={playerSources}
         key={store.M3u8Url}
@@ -155,7 +178,7 @@ const storedata = useSnapshot(store);
         <CenterPlayButton />
         <BufferingIndicator />
         <VideoLayout />
-      </MediaPlayer>}
+      </MediaPlayer>)}</>}
     </div>
   );
 };

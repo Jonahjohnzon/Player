@@ -4,10 +4,6 @@ export const ListServer = [
     name: 'Lion',
   },
 
-  // {
-  //   id : 'Dove',
-  //   name : 'Dove'
-  // },
   {
     id: 'Viper',
     name: 'Viper',

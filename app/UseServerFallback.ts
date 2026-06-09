@@ -81,8 +81,6 @@ export function useServerFallback() {
 
 
 export const loadNextServer = async () => {
- 
-
   store.loadingServer = true;
   store.serverFailed = null;
 
@@ -90,9 +88,12 @@ export const loadNextServer = async () => {
     (s) => s.name === store.ServerinUse
   );
 
-  const remainingServers = ListServer.slice(currentIndex + 1);
+  // All servers except the current one, starting from the next
+  const remainingServers = [
+    ...ListServer.slice(currentIndex + 1),
+    ...ListServer.slice(0, currentIndex),
+  ];
 
-  
   const params: MediaParams = {
     paramId: store.ParamId,
     Type: store.Type as MediaParams['Type'],
@@ -119,23 +120,18 @@ export const loadNextServer = async () => {
               Server: server.name,
             });
 
-      if (response.error || !response.sources?.length) {
-        continue;
-      }
+      if (response.error || !response.sources?.length) continue;
 
       store.PreviousServer = store.ServerinUse;
       store.ServerinUse = server.name;
-
       store.mainType = response.sources[0];
       store.sources = response.sources;
       store.subtitles = response.subtitles;
       store.M3u8Url = response.sources[0]?.url || "";
-
       store.title = response.title;
       store.poster = response.poster;
       store.backdrop = response.backdrop;
       store.overview = response.overview;
-
       store.tryingServer = null;
       store.loadingServer = false;
 
@@ -145,9 +141,9 @@ export const loadNextServer = async () => {
     }
   }
 
-  store.serverFailed = store.ServerinUse;
+  // Every server failed — fall back to VidFast iframe
   store.tryingServer = null;
   store.loadingServer = false;
-
+  store.vidfastFallback = true;
   return false;
 };

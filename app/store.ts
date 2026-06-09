@@ -39,6 +39,7 @@ export const store = proxy({
     overview : "",
     tryingServer: null as string | null,
     serverFailed: null as string | null,
+    vidfastFallback :false,
     mainType: {
     url: '',
     type: 'application/x-mpegurl',
