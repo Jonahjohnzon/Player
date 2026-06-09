@@ -1,7 +1,6 @@
 const WORKERS = [
   'https://lively-band-0eab.ejo543210.workers.dev',
   'https://proxy.jonahjohnzon.workers.dev',
-  'https://steam-proxy.hadezanubiz.workers.dev',
 
 ];
 
