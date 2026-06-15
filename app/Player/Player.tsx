@@ -157,7 +157,7 @@ const storedata = useSnapshot(store);
         onProviderChange={onProviderChange}
         ref={player}
          onError={() => {
-     switchToNextServer();
+      store.vidfastFallback = true;
   }}
       >
         <MediaProvider>
