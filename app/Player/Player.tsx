@@ -2,7 +2,7 @@
 import '@vidstack/react/player/styles/base.css';
 import { useSnapshot } from "valtio";
 import { store } from '@/app/store';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import {BufferingIndicator} from './components/layouts/buffer';
 import {loadNextServer} from '../UseServerFallback'
 import {
@@ -38,6 +38,30 @@ import { VideoLayout } from './components/layouts/video-layout';
   );
 };
 
+const BufferingFallbackWatcher = () => {
+  const waiting = useMediaState('waiting');
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    if (waiting) {
+      timeoutRef.current = setTimeout(() => {
+        store.vidfastFallback = true;
+      }, 10000);
+    } else if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+        timeoutRef.current = null;
+      }
+    };
+  }, [waiting]);
+
+  return null;
+};
 
 
 
@@ -64,18 +88,7 @@ const Player = () => {
     }
   }
 
-  const switchToNextServer = async () => {
-  if (store.loadingServer) return;
-
-  store.loadingServer = true;
-  store.tryingServer = "Next Server";
-
-  try {
-    await loadNextServer();
-  } catch {
-    store.serverFailed = store.ServerinUse;
-  }
-};
+ 
 
  const playerSources={
  src: source.url,
@@ -89,6 +102,7 @@ const Player = () => {
 };
 
 const storedata = useSnapshot(store);
+
 
   return (
     <div className="bg-black h-screen w-screen flex flex-col justify-center items-center overflow-hidden ">
@@ -178,6 +192,7 @@ const storedata = useSnapshot(store);
         </MediaProvider>
         <CenterPlayButton />
         <BufferingIndicator />
+        <BufferingFallbackWatcher />
         <VideoLayout />
       </MediaPlayer>)}</>}
     </div>
