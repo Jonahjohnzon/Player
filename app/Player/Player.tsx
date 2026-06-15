@@ -2,7 +2,7 @@
 import '@vidstack/react/player/styles/base.css';
 import { useSnapshot } from "valtio";
 import { store } from '@/app/store';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import {BufferingIndicator} from './components/layouts/buffer';
 import {loadNextServer} from '../UseServerFallback'
 import {
@@ -43,6 +43,7 @@ import { VideoLayout } from './components/layouts/video-layout';
 
 const Player = () => {
  const snap = useSnapshot(store);
+ const [backup, setBackup] = useState(true) 
   const source =  snap.mainType
   const subtitles = snap.subtitles;
   const poster = snap.poster;
@@ -130,16 +131,16 @@ const storedata = useSnapshot(store);
 :<>{snap.vidfastFallback ? (
   <div className="relative w-full h-full">
     {/* Optional: header showing fallback is active */}
-    <div className="absolute top-2 left-2 z-10 flex items-center gap-2 px-3 py-1 rounded bg-black/60 text-white/60 text-xs">
+    {backup && <div className="absolute top-2 left-2 z-10 flex items-center gap-2 px-3 py-1 rounded bg-black/60 text-white/60 text-xs">
       <span className="w-1.5 h-1.5 rounded-full bg-yellow-400 animate-pulse" />
       Using backup server
       <button
-        onClick={() => { store.vidfastFallback = false; store.loadingServer = false; }}
+        onClick={() => { setBackup(false) }}
         className="ml-2 text-white/40 hover:text-white transition-colors"
       >
         ✕
       </button>
-    </div>
+    </div>}
     <iframe
       src={vidfastUrl}
       className="w-full h-full border-0 rounded-md"
