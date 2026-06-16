@@ -180,18 +180,18 @@ export function VideoQualitySubmenu({ placement }: SettingsProps) {
 
 function CaptionSubmenu() {
   const options = useCaptionOptions(),
-    hint = options.selectedTrack?.label ?? 'Off';
+    hint = options?.selectedTrack?.label ?? 'Off';
   return (
     <Menu.Root>
       <SubmenuButton
         label="Captions"
         hint={hint}
-        disabled={options.disabled}
+        disabled={options?.disabled}
         icon={FaRegClosedCaptioning}
       />
       <Menu.Content className={submenuClass}>
-        <Menu.RadioGroup className="w-full flex flex-col" value={options.selectedValue}>
-          {options.map(({ label, value, select }) => (
+        <Menu.RadioGroup className="w-full flex flex-col" value={options?.selectedValue}>
+          {options?.map(({ label, value, select }) => (
             <Radio value={value} onSelect={select} key={value}>
               {label}
             </Radio>

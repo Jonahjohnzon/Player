@@ -1,4 +1,8 @@
 export const ListServer = [
+    {
+    id: 'Spider',
+    name: 'Spider'
+  },
    {
     id: 'Lion',
     name: 'Lion',
@@ -14,10 +18,7 @@ export const ListServer = [
   //   name: 'Eagle',
   // },
   // },
-  // {
-  //   id: 'Anyembed',
-  //   name: 'Anyembed'
-  // }
+
   // {
   //   id: 'VidZee',
   //   name: 'VidZee'

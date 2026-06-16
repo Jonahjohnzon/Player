@@ -172,7 +172,7 @@ const storedata = useSnapshot(store);
         onProviderChange={onProviderChange}
         ref={player}
          onError={() => {
-      store.vidfastFallback = true;
+      // store.vidfastFallback = true;
   }}
       >
         <MediaProvider>
@@ -192,7 +192,7 @@ const storedata = useSnapshot(store);
         </MediaProvider>
         <CenterPlayButton />
         <BufferingIndicator />
-        <BufferingFallbackWatcher />
+        {/* <BufferingFallbackWatcher /> */}
         <VideoLayout />
       </MediaPlayer>)}</>}
     </div>

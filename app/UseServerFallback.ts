@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // hooks/useServerFallback.ts
 import { useState } from 'react'
 import { store } from '@/app/store'
@@ -33,12 +34,25 @@ export function useServerFallback() {
                 ? await GetMovieFetch({ Tmdb_Id: params.paramId, Type: 'movie', Server: server })
                 : await GetMovieFetch({ Tmdb_Id: params.paramId, Type: 'tv', Season: params.Season, Episode: params.Episode, Server: server })
             if (response.error || !response.sources?.length) return false
+            if (response.subtitles.length != 0) {
+           const textTracks = response.subtitles
+           .filter((sub:any) => sub.url && sub.lang && typeof sub.lang === 'string' && sub.lang.trim() !== '')
+           .map((sub:any) => ({
+               url: sub.url,
+               label: sub.lang.trim(),           // ensure no whitespace-only strings
+               kind: 'subtitles' as const,
+               language: sub.lang.toLowerCase().split(' ')[0],
+            }));
+            store.subtitles = textTracks;
+          }
+          else{
+            store.subtitles = [];
+          }
             store.ParamId = params.paramId
             store.Type = params.Type
             store.ServerinUse = server
             store.mainType = response.sources[0]
             store.sources = response.sources
-            store.subtitles = response.subtitles
             store.M3u8Url = response.sources[0]?.url || ''
             store.loading = false
             store.title = response.title

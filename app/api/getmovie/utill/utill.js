@@ -50,6 +50,10 @@ export const utill = async (Tmdb_Id, Type, Season, Episode, Server) => {
                 const {xpassProvider} = await import('../providers/xpass/xpass.js')
                 data = await xpassProvider(media)
                 break;
+            case 'Spider':
+                const {VidNestProvider} = await import('../providers/vidnest/vidnest.js')
+                data = await VidNestProvider(media)
+                break;
 
             default:
                 return { error: 'Unsupported server.' };
